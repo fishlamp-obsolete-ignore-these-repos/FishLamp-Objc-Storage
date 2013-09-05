@@ -24,35 +24,42 @@
 }
 
 - (void) writeObject:(id) object {
-    FLAssert(self.isServiceOpen);
+    FLAssert(self.isOpen);
     FLAssertNotNil(self.objectStorage);
     [self.objectStorage writeObject:object];
 }
 
 - (id) readObject:(id) inputObject {
-    FLAssert(self.isServiceOpen);
+    FLAssert(self.isOpen);
     FLAssertNotNil(self.objectStorage);
     return [self.objectStorage readObject:inputObject];
 }
 
 - (void) deleteObject:(id) object {
-    FLAssert(self.isServiceOpen);
+    FLAssert(self.isOpen);
     FLAssertNotNil(self.objectStorage);
     [self.objectStorage deleteObject:object];
 }
 
 - (BOOL) containsObject:(id) object {
-    FLAssert(self.isServiceOpen);
+    FLAssert(self.isOpen);
     FLAssertNotNil(self.objectStorage);
     return [self.objectStorage containsObject:object];
 }
 
 - (void) writeObjectsInArray:(NSArray*) array {
-    FLAssert(self.isServiceOpen);
+    FLAssert(self.isOpen);
     FLAssertNotNil(self.objectStorage);
     [self.objectStorage writeObjectsInArray:array];
 }
 
+- (void) willStartProcessingObject:(id)object {
+    if([object respondsToSelector:@selector(setStorageService:)]) {
+        if([object storageService] == nil) {
+            [object setStorageService:self];
+        }
+    }
+}
 
 @end
 
